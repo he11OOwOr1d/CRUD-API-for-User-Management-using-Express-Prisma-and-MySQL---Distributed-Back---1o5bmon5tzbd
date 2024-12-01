@@ -38,7 +38,7 @@ app.post('/api/auth/signup',async (req,res)=>{
     }
   })
   if (user){
-    return res.status(200).json({"message": "User created successfully", "userId": user.id})
+    return res.status(201).json({"message": "User created successfully", "userId": user.id})
   }
   
 })
@@ -56,14 +56,14 @@ app.post('/api/auth/login',async (req,res)=>{
     }
   })
   if(!user){
-    return res.status(400).json({
+    return res.status(404).json({
       "error": "User not found"
     })
   }
   const accesstoken = genToken(user.id,user.name,user.email)
   const isCompare = await bcrypt.compare(password,user.password)
   if (!isCompare){
-    return res.status(400).json({
+    return res.status(401).json({
       "error": "Invalid credentials"
     })
   }
